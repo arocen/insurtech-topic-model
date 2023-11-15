@@ -6,7 +6,7 @@ from gensim import similarities
 from gensim.corpora import Dictionary
 import numpy as np
 
-def kl_divergence(model1, model2, num_topics, num_words):
+def kl_divergence(model1, model2, num_topics):
     """
     Calculate Kullback-Leibler divergence between two LDA models.
 
@@ -22,7 +22,7 @@ def kl_divergence(model1, model2, num_topics, num_words):
     common_dictionary = Dictionary([model1.id2word.doc2bow([]), model2.id2word.doc2bow([])])
 
     # Create a similarity index using model1's topics
-    similarity_index = similarities.MatrixSimilarity(model1.get_topics())
+    # similarity_index = similarities.MatrixSimilarity(model1.get_topics())
 
     # Get the topic distributions for the reference document
     reference_doc = "Your reference document here"
