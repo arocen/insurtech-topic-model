@@ -24,3 +24,8 @@ def cutAndSave(refer_path, dict_path=refer_cut_dict_path, save_path=save_path):
         f2.write(results)
     
     return results
+
+
+
+refer_path = os.environ.get('refer_doc_path')
+cutAndSave(refer_path)
