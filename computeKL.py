@@ -31,6 +31,9 @@ def kl_divergence(df, model, reference_doc:str, news_report:list[str], dictionar
         report_topics = model.get_document_topics(bow_news, minimum_probability=0.000000000001)
         KL = kullback_leibler(reference_topics, report_topics)
         # print("report_topics:", report_topics)
+
+        # calculate the reciprocal
+        KL = 1 / KL
         df.at[i, year] = KL
 
     return
