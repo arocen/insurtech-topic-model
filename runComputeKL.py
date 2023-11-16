@@ -1,5 +1,6 @@
 from gensim.models import LdaModel
 import computeKL
+from gensim import corpora
 import os
 from dotenv import load_dotenv
 
@@ -27,6 +28,10 @@ with open(refer_corpus_path, "r", encoding="utf-8") as f:
     reference_corpus = text.split()
 
 
+
+dictionary_refer = corpora.Dictionary.load(refer_model_path + ".id2word")
+dictionary_news = corpora.Dictionary.load(sample_model_path + ".id2word")
+
 num_topics = 15
-kl_div = computeKL.kl_divergence(referModel, sampleModel, num_topics, reference_corpus, news_corpus)
+kl_div = computeKL.kl_divergence(referModel, sampleModel, num_topics, reference_corpus, news_corpus, dictionary_refer, dictionary_news)
 print("KL Divergence:", kl_div)
