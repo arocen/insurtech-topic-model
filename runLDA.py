@@ -25,9 +25,13 @@ def fitReference(cut_refer_doc_path, refer_model_save_path):
 
 
 # fit sample news to LDA
-testLDA()
+# testLDA()
 
 # fit reference document to LDA
 cut_refer_doc_path = os.environ.get("cut_refer")
 refer_model_save_path = os.environ.get("refer_model_save_path")
-referModel = fitReference(cut_refer_doc_path, refer_model_save_path)
+cut_refer_doc_path2 = os.environ.get('cut_refer2')
+refer_model_save_path2 = os.environ.get('refer_model_save_path2')
+
+# referModel = fitReference(cut_refer_doc_path, refer_model_save_path)
+referModel2 = fitReference(cut_refer_doc_path2, refer_model_save_path2)
