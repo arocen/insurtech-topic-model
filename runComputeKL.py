@@ -40,5 +40,17 @@ def run(referModel_path, sampleModel_path, refer_corpus_path, sample_corpus_path
     print("KL Divergence:", kl_div)
     return kl_div
 
-run(refer_model_path, sample_model_path, refer_corpus_path, sample_corpus_path)
-run(refer_model_path2, sample_model_path, refer_corpus_path2, sample_corpus_path)
+# run(refer_model_path, sample_model_path, refer_corpus_path, sample_corpus_path)
+# run(refer_model_path2, sample_model_path, refer_corpus_path2, sample_corpus_path)
+
+def computeByYear(referModel_path, newsModelsFolder, refer_corpus_path, news_corpus_folder):
+    '''Compute K-L divergence of reference document and corpus of each year's news, save results as Excel file.'''
+    # load reference corpus
+    # load reference id2word and dicionary
+
+    # get list of paths of news models by year
+    # load news models' id2word and dictionary
+    
+    # initialize a DataFrame
+    # loop calculating K-L
+    # save DataFrame as excel

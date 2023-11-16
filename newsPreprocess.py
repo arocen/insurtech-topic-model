@@ -13,6 +13,15 @@ cut_results = os.environ.get("cut_result_by_year")
 split_pattern = os.environ.get("split_pattern")
 uselessText_path = os.environ.get("uselessText_path")
 
+
+stopwords_path = os.environ.get('stopwords_path')
+
+def load_stopwords(stopwords_path)->list[str]:
+    with open(stopwords_path, "r", encoding="utf-8") as f:
+        stopwords = f.readlines()
+    return stopwords
+
+
 def load_doc(doc_folder_path:str=os.environ.get('doc_folder_path'))->list[str]:
     '''
     读取各年度文档
@@ -74,12 +83,14 @@ def split_docs_by_year(docs_by_year:list[str], split_pattern:str=split_pattern)-
         splittedDocsByYear.append(doc_list)  # use append instead of extend
     return splittedDocsByYear
 
-def cut(docs:list[str], my_dict_path:str=os.environ.get('dict_from_excel'))->list[str]:
+def cut(docs:list[str], my_dict_path:str=os.environ.get('dict_from_excel'), stopwords_path=stopwords_path)->list[str]:
     '''
     将列表中的元素切分为词语，返回列表, 列表中每一个元素为一个分词后的句子
 
     my_dict_path: 自定义词典路径
     '''
+    stopwords = load_stopwords(stopwords_path)
+
     if my_dict_path:
         # 让jieba加载自定义词典
         jieba.load_userdict(my_dict_path)
@@ -87,7 +98,7 @@ def cut(docs:list[str], my_dict_path:str=os.environ.get('dict_from_excel'))->lis
     cut_docs = []
     print("Cutting docs with jieba:")
     for doc in tqdm(docs):
-        tokens = [token for token in jieba.cut(doc)]    # To-do: consider removing stopwords
+        tokens = [token for token in jieba.cut(doc) if token not in stopwords]    # To-do: consider removing stopwords
         result = ' '.join(tokens)
         cut_docs.append(result)
     print("Cutting completed!")

@@ -24,3 +24,4 @@ optimalization
 other thoughts:
 - DTM for calculating multi-year word distributions?
 - How to obtain other corpus?
+- Adjust topic numbers
