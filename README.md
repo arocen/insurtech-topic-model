@@ -14,12 +14,26 @@ To-do of News reports:
 - [ ] Run LDA on a reference document about InsurTech(Q: with what topic number?), get and save word distributions.
 - [ ] Calculate K-L divergence between distributions of reference document and those of news reports. (Q: How to match the requirements that probabilities sums to 1? How to handle the difference of vocabularies (BOW) between reference document and news reports)
 
+
+## implement K-L divergence
+
+Input: topic distributions of 2 documents
+
+One is reference document, another is a news document.
+
+Topics that is used to predict the topic distributions of reference document, are are derived from annual reports (or news reports).
+
+> We provide the means of 100 bootstrap samples that we obtain by repeatedly sampling 90% of the annual reports at random and applying the LDA method with 45 topics. Based on the topics obtained in each bootstrap sample, we derive the distribution of topics in the various reference documents that have not entered into the estimation process of the LDA. The bands provide 95% confidence intervals for the mean computed based on the bootstrap samples.
+> ———— Estimating the relation between digitalization and the market value of insurers
+
 test
 - [x] Load saved gensim LDA model, id2word, etc.
 
 optimalization
 - [ ] Load stopwords list when cutting with jieba
 - [ ] Compute K-L divergence by year
+
+write code with gensim wraper of mallet
 
 other thoughts:
 - DTM for calculating multi-year word distributions?

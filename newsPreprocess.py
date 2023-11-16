@@ -18,7 +18,7 @@ stopwords_path = os.environ.get('stopwords_path')
 
 def load_stopwords(stopwords_path)->list[str]:
     with open(stopwords_path, "r", encoding="utf-8") as f:
-        stopwords = f.readlines()
+        stopwords = f.read().splitlines() # if use f.readlines() instead, error occurs
     return stopwords
 
 
@@ -90,6 +90,7 @@ def cut(docs:list[str], my_dict_path:str=os.environ.get('dict_from_excel'), stop
     my_dict_path: 自定义词典路径
     '''
     stopwords = load_stopwords(stopwords_path)
+    print("stopwords loaded, words number:", len(stopwords))
 
     if my_dict_path:
         # 让jieba加载自定义词典

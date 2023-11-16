@@ -20,6 +20,9 @@ def runModel(corpus:list[str], save_path:str, num_topics:int, passes:int=10)->Ld
     # Create a Gensim dictionary
     dictionary = corpora.Dictionary(tokenized_data)
 
+    # save dictionary, add a suffix to filename
+    dictionary.save(save_path + ".dictionary")
+
     # Create a Gensim corpus
     corpus = [dictionary.doc2bow(doc) for doc in tokenized_data]
 
