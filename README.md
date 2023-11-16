@@ -29,14 +29,16 @@ Topics that is used to predict the topic distributions of reference document, ar
 test
 - [x] Load saved gensim LDA model, id2word, etc.
 
-optimalization
+optimization
 - [x] Load stopwords list when cutting with jieba
 - [x] Compute K-L divergence by year
 - [ ] Linearly scaled K-L divergence the interval [0, 1]
 - [ ] bootstrap sample
 - [ ] get company or province level measure
+- [ ] use metric other than K-L divergence
+- [ ] write code with gensim wraper of mallet
 
-write code with gensim wraper of mallet
+
 
 other thoughts:
 - DTM for calculating multi-year word distributions?
