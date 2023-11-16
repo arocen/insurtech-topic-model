@@ -5,7 +5,7 @@ from gensim import corpora
 import os
 from dotenv import load_dotenv
 import pandas as pd
-from pprint import pprint
+from tqdm import tqdm
 
 load_dotenv()
 
@@ -20,7 +20,7 @@ refer_corpus_path2 = os.environ.get('cut_refer2')  # corpus about insurance inst
 
 doc_div_chars = doc_div_chars = os.environ.get("doc_div_chars")
 
-def run(model_path, refer_corpus_path, news_path):
+def run(df, model_path, refer_corpus_path, news_path, year):
     model = LdaModel.load(model_path)  # Your model trained on news reports
 
     with open(news_path, "r", encoding="utf-8") as f:
@@ -34,9 +34,8 @@ def run(model_path, refer_corpus_path, news_path):
 
     dictionary_news = corpora.Dictionary.load(model_path + ".dictionary")
 
-    kl_div = computeKL.kl_divergence(model, reference_corpus, news_corpus, dictionary_news)
-    print("KL Divergence:", kl_div)
-    return kl_div
+    computeKL.kl_divergence(df, model, reference_corpus, news_corpus, dictionary_news, year)
+    return
 
 # run(refer_model_path, sample_model_path, refer_corpus_path, sample_corpus_path)
 # run(refer_model_path2, sample_model_path, refer_corpus_path2, sample_corpus_path)
@@ -56,15 +55,14 @@ def computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_sa
     
     years = npre.getYearFromFilename()
     # print(years)
-    annual_KL = pd.DataFrame(columns=years)
-    for newsModelPath, newsCorpusPath, year in zip(newsModelPathList, newsCorpusPathList, years):
-        # pprint([newsModelPath, newsCorpusPath, year])
-        KL = run(newsModelPath, refer_corpus_path, newsCorpusPath)
-        annual_KL.at[0, year] = KL
+    KL_year_company = pd.DataFrame(columns=years)
+    for newsModelPath, newsCorpusPath, year in tqdm(zip(newsModelPathList, newsCorpusPathList, years)):
+        run(KL_year_company, newsModelPath, refer_corpus_path, newsCorpusPath, year)
+        
     
-    print(annual_KL)
+    print(KL_year_company)
     KL_save_path = os.path.join(KL_save_folder, os.path.splitext(os.path.basename(refer_corpus_path))[0] + "_newsByYear" + ".xlsx")
-    annual_KL.to_excel(KL_save_path)
+    KL_year_company.to_excel(KL_save_path)
     return
 
 computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
