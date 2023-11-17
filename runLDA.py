@@ -4,6 +4,7 @@ import LDA
 import newsPreprocess as npre
 from tqdm import tqdm
 from dotenv import load_dotenv
+import pandas as pd
 load_dotenv()
 
 sample_corpus_path = os.environ.get("sample_corpus_path")
@@ -64,12 +65,14 @@ def runLDAByYearWithRefer(num_topics=15, cut_refer_doc_path=cut_refer_doc_path, 
 
 
 
-def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_folder=bootstrap_folder):
+def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_folder=bootstrap_folder, num_iterations=100):
     corpusByYear = npre.load_preprocessed_multi_corpus(cut_news_folder)
     years = npre.getYearFromFilename(cut_news_folder)
+    indices = pd.DataFrame()
     for corpus, year in zip(corpusByYear, years):
         save_path = os.path.join(bootstrap_folder, year)
-        LDA.bootstrapSample(corpus, save_path, num_topics)
+        LDA.bootstrapSample(corpus, save_path, num_topics, year, indices, num_iterations=num_iterations)
+    indices.to_excel(os.path.join(bootstrap_folder, "indices.xlsx"))
     return
 
 
@@ -89,4 +92,4 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
 
 # runLDAByYear()
 
-bootstrapByYear()
+bootstrapByYear(num_iterations=10)
