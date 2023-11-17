@@ -40,6 +40,10 @@ optimization
 
 
 
+method 1: Take word distributions of topics as input of K-L divergence. Determine an Insurtech topic according to values of K-L divergence. Choose the smallest K-L divergence as the measure of InsurTech.
+
+method 2: Take topic distributions of documents as input of K-L divergence. Then we can measure InsurTech according to values of K-L divergence.
+
 other thoughts:
 - DTM for calculating multi-year word distributions?
 - How to obtain other corpus?

@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import pandas as pd
 from tqdm import tqdm
+import re
 
 load_dotenv()
 
@@ -65,4 +66,47 @@ def computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_sa
     KL_year_company.to_excel(KL_save_path)
     return
 
-computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
+def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder):
+    newsModelPathList = sorted([os.path.join(newsModelsFolder, f) for f in os.listdir(newsModelsFolder) if isSampleName(f)])
+    newsCorpusPathList = sorted([os.path.join(news_corpus_folder, f) for f in os.listdir(news_corpus_folder) if f.endswith(".txt")])
+    # print("newsModelPathList:", newsModelPathList)
+    # print("newsCorpusPathList:", newsCorpusPathList)
+    
+    years = npre.getYearFromFilename()
+    # print(years)
+    KL_year_company = pd.DataFrame(columns=years)
+    for newsModelPath, newsCorpusPath, year in tqdm(zip(newsModelPathList, newsCorpusPathList, years)):
+        run(KL_year_company, newsModelPath, refer_corpus_path, newsCorpusPath, year)
+        
+    
+    print(KL_year_company)
+    KL_save_path = os.path.join(KL_save_folder, os.path.splitext(os.path.basename(refer_corpus_path))[0] + "_newsByYear" + ".xlsx")
+    KL_year_company.to_excel(KL_save_path)
+    return
+
+
+def isSampleName(filename):
+    '''
+    
+    >>> import re
+    >>> isSampleName("2016_iter0")
+    True
+    >>> isSampleName("2016_iter99.id2word")
+    False
+
+    '''
+    pattern = r"^\d{4}_iter\d{1, 3}(?!\..*?)$"
+    match = re.match(pattern, filename)
+    if match:
+        return True
+    else:
+        return False
+
+# computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
+
+# use a paper less related to InsurTech as reference document to validate that the index declines if topics are unrelated
+# computeByYear(newsModelsFolder, refer_corpus_path2, news_corpus_folder, KL_save_folder)
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
