@@ -92,4 +92,4 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
 
 # runLDAByYear()
 
-bootstrapByYear(num_iterations=10)
+bootstrapByYear(num_iterations=100)

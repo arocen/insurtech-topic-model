@@ -92,9 +92,9 @@ def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_fold
     
     # print(years)
     KL_year_company = pd.DataFrame(columns=years, index=range(2062)) # set index with the range of most reports in each year
-    for curr_year_paths, newsCorpusPath, year in zip(ModelPathGroup, newsCorpusPathList, years):
+    for curr_year_paths, newsCorpusPath, year in zip(ModelPathGroup, newsCorpusPathList, tqdm(years)):
         # compute K-L with each sample model
-        for ModelPath in curr_year_paths:
+        for ModelPath in tqdm(curr_year_paths):
             iternum = getIterFromName(os.path.basename(ModelPath))
             sample_index = ast.literal_eval(indices.at[iternum, year]) # convert str back to list of int
             run(KL_year_company, ModelPath, refer_corpus_path, newsCorpusPath, year, sample_index)

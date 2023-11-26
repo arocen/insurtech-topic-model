@@ -36,7 +36,7 @@ def kl_divergence(df, model, reference_doc:str, news_report:list[str], dictionar
         # print("report_topics:", report_topics)
 
         # calculate the reciprocal
-        KL = 1 / KL
+        # KL = 1 / KL # comment this to use arithmetic average instead
         
         if pd.isna(df.at[i, year]):
             # initialize
