@@ -153,8 +153,9 @@ def getSampleTimesPerDoc(indices, years):
 # computeByYear(newsModelsFolder, refer_corpus_path2, news_corpus_folder, KL_save_folder)
 
 # bootstrap_folder = os.environ.get("bootstrap_folder")
-bootstrap_folder = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
-cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
+# bootstrap_folder = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
+bootstrap_folder = os.environ.get("bootstrapModels_renbao") # renbao analyse reports models
+cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_renbao")
 indices_path = os.path.join(bootstrap_folder, "indices.xlsx")
 computeBootstrapByYear(bootstrap_folder, refer_corpus_path, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
 

@@ -83,7 +83,14 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
 # bootstrapByYear(num_iterations=100)
 
 
-# Bootstrap samples on analyse reports
-cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
-bootstrapModels_pingan = os.environ.get("bootstrapModels_pingan")
-bootstrapByYear(cut_news_folder=cut_analyse_report_folder_pingan, bootstrap_folder=bootstrapModels_pingan)
+# Bootstrap samples on analyse reports about pingan
+# 2015 to 2023 years
+# cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
+# bootstrapModels_pingan = os.environ.get("bootstrapModels_pingan")
+# bootstrapByYear(cut_news_folder=cut_analyse_report_folder_pingan, bootstrap_folder=bootstrapModels_pingan)
+
+# Bootstrap samples on analyse reports about renbao
+# 2018 to 2023 years
+cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
+bootstrapModels_renbao = os.environ.get("bootstrapModels_renbao")
+bootstrapByYear(cut_news_folder=cut_analyse_report_folder_renbao, bootstrap_folder=bootstrapModels_renbao)

@@ -7,9 +7,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-analyse_report_folder_pingan = os.environ.get("analyse_report_folder_pingan")
 doc_div_chars = os.environ.get("doc_div_chars")
+
+# 平安
+analyse_report_folder_pingan = os.environ.get("analyse_report_folder_pingan")
 cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
+
+# 人保
+analyse_report_folder_renbao = os.environ.get("analyse_report_folder_renbao")
+cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
 
 def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
     '''
@@ -46,3 +52,4 @@ def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
     return cutReportsByYear
 
 # cutRawByYear(analyse_report_folder_pingan, cut_analyse_report_folder_pingan)
+cutRawByYear(analyse_report_folder_renbao, cut_analyse_report_folder_renbao)

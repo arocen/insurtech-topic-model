@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-analyse_report_folder_pingan = os.environ.get("analyse_report_folder_pingan")
 
 def extract_by_year(parent_folder):
     '''Extract txt from pdf files in each child folder of parent_folder, save txt files in each  child folder.'''
@@ -59,4 +58,9 @@ def pdf2txt(file_address):
     return all_text
 
 
+
+analyse_report_folder_pingan = os.environ.get("analyse_report_folder_pingan")
+analyse_report_folder_renbao = os.environ.get("analyse_report_folder_renbao")
+
 # extract_by_year(analyse_report_folder_pingan)
+extract_by_year(analyse_report_folder_renbao)

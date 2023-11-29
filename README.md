@@ -32,9 +32,10 @@ test
 optimization
 - [x] Load stopwords list when cutting with jieba
 - [x] Compute K-L divergence by year
+- [x] bootstrap sample
+- [x] get company or province level measure
+- [ ] Remove tokens of digits when cutting words
 - [ ] Linearly scaled K-L divergence the interval [0, 1]
-- [ ] bootstrap sample
-- [ ] get company or province level measure
 - [ ] use metric other than K-L divergence
 - [ ] write code with gensim wraper of mallet
 
