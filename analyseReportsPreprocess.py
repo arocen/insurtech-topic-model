@@ -12,7 +12,12 @@ doc_div_chars = os.environ.get("doc_div_chars")
 cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
 
 def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
-    '''Return list of lists. '''
+    '''
+    Return list of lists. 
+    
+    Use newsPreprocess.load_preprocessed_multi_corpus(save_folder) to load cut results.
+    Use newsPreprocess.getYearFromFilename(save_folder) to get years.
+    '''
     child_directories = ar2t.get_child_directories(parent_folder)
 
     cutReportsByYear = []
