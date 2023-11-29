@@ -69,11 +69,13 @@ def computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_sa
 
 def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder, indices_path):
 
-    years = npre.getYearFromFilename()
+    years = npre.getYearFromFilename(news_corpus_folder) # The default parameter here must change according to corpus selected.
     
     modelnames = [f for f in os.listdir(newsModelsFolder) if isSampleName(f)]
     # group modelnames by year
     ModelPathGroup = []
+
+
     for year in years:
         curr_year_paths = []
         for filename in modelnames:
@@ -150,9 +152,14 @@ def getSampleTimesPerDoc(indices, years):
 # use a paper less related to InsurTech as reference document to validate that the index declines if topics are unrelated
 # computeByYear(newsModelsFolder, refer_corpus_path2, news_corpus_folder, KL_save_folder)
 
-bootstrap_folder = os.environ.get("bootstrap_folder")
+# bootstrap_folder = os.environ.get("bootstrap_folder")
+bootstrap_folder = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
+cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
 indices_path = os.path.join(bootstrap_folder, "indices.xlsx")
-computeBootstrapByYear(bootstrap_folder, refer_corpus_path, news_corpus_folder, KL_save_folder, indices_path)
+computeBootstrapByYear(bootstrap_folder, refer_corpus_path, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
+
+
+
 
 # if __name__ == "__main__":
 #     import doctest

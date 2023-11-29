@@ -76,20 +76,14 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
     return
 
 
-# To-do: 
 # Bootstrap sample. 100 samples, 90% news reports.
 # Derive topic distribution of reference document based on bootstrap samples. (reference documents are not included in the corpus of LDA)
 
-
-# fit sample news to LDA
-# testLDA()
-
-# fit reference document to LDA
+# Bootstrap samples on news reports
+# bootstrapByYear(num_iterations=100)
 
 
-# referModel = fitReference(cut_refer_doc_path, refer_model_save_path)
-# referModel2 = fitReference(cut_refer_doc_path2, refer_model_save_path2)
-
-# runLDAByYear()
-
-bootstrapByYear(num_iterations=100)
+# Bootstrap samples on analyse reports
+cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
+bootstrapModels_pingan = os.environ.get("bootstrapModels_pingan")
+bootstrapByYear(cut_news_folder=cut_analyse_report_folder_pingan, bootstrap_folder=bootstrapModels_pingan)

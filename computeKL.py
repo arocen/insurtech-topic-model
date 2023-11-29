@@ -27,6 +27,9 @@ def kl_divergence(df, model, reference_doc:str, news_report:list[str], dictionar
     reference_topics = model.get_document_topics(bow_refer, minimum_probability=0.000000000001)
     # print("reference_topics:", reference_topics)
     if sample_index:
+        # print("Debug: sample_index is ", sample_index)
+        # print("Debug: len(news_report) is", len(news_report))
+
         news_report = [news_report[index] for index in sample_index]
     
     for i, report in zip(sample_index, news_report):

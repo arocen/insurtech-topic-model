@@ -14,7 +14,7 @@ cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pin
 def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
     '''
     Return list of lists. 
-    
+
     Use newsPreprocess.load_preprocessed_multi_corpus(save_folder) to load cut results.
     Use newsPreprocess.getYearFromFilename(save_folder) to get years.
     '''
@@ -38,7 +38,7 @@ def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
 
     # Save results
     years = sorted([os.path.basename(child_directory) for child_directory in child_directories])
-    save_paths = [os.path.join(save_folder, "cut_" + year + ".txt") for year in years]
+    save_paths = [os.path.join(save_folder, year + "_cut_analyseReports.txt") for year in years]
     for cutReportsIn1year, save_path in zip(cutReportsByYear, save_paths):
         with open(save_path, "w", encoding="utf-8") as f:
             f.write((doc_div_chars.join(cutReportsIn1year)))
