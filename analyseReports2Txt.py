@@ -59,4 +59,4 @@ def pdf2txt(file_address):
     return all_text
 
 
-extract_by_year(analyse_report_folder_pingan)
+# extract_by_year(analyse_report_folder_pingan)
