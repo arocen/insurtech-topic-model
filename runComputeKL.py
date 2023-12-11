@@ -166,12 +166,22 @@ def getSampleTimesPerDoc(indices, years):
 # computeBootstrapByYear(bootstrap_folder_renbao, refer_corpus_path, cut_analyse_report_folder_renbao, KL_save_folder, indices_path)
 
 # 新华
-bootstrap_folder_xinhua = os.environ.get("bootstrapModels_xinhua")
-cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
-indices_path = os.path.join(bootstrap_folder_xinhua, "indices.xlsx")
-computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path, cut_analyse_report_folder_xinhua, KL_save_folder, indices_path)
+# bootstrap_folder_xinhua = os.environ.get("bootstrapModels_xinhua")
+# cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
+# indices_path = os.path.join(bootstrap_folder_xinhua, "indices.xlsx")
+# computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path, cut_analyse_report_folder_xinhua, KL_save_folder, indices_path)
 
+# 太保
+# bootstrap_folder_taibao = os.environ.get("bootstrapModels_taibao")
+# cut_analyse_report_folder_taibao = os.environ.get("cut_analyse_report_folder_taibao")
+# indices_path = os.path.join(bootstrap_folder_taibao, "indices.xlsx")
+# computeBootstrapByYear(bootstrap_folder_taibao, refer_corpus_path, cut_analyse_report_folder_taibao, KL_save_folder, indices_path)
 
+# 国寿
+# bootstrap_folder_guoshou = os.environ.get("bootstrapModels_guoshou")
+# cut_analyse_report_folder_guoshou = os.environ.get("cut_analyse_report_folder_guoshou")
+# indices_path = os.path.join(bootstrap_folder_guoshou, "indices.xlsx")
+# computeBootstrapByYear(bootstrap_folder_guoshou, refer_corpus_path, cut_analyse_report_folder_guoshou, KL_save_folder, indices_path)
 
 # if __name__ == "__main__":
 #     import doctest
