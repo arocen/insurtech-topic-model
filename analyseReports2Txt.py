@@ -61,6 +61,12 @@ def pdf2txt(file_address):
 
 analyse_report_folder_pingan = os.environ.get("analyse_report_folder_pingan")
 analyse_report_folder_renbao = os.environ.get("analyse_report_folder_renbao")
+analyse_report_folder_xinhua = os.environ.get("analyse_report_folder_xinhua")
+analyse_report_folder_guoshou = os.environ.get("analyse_report_folder_guoshou")
+analyse_report_folder_taibao = os.environ.get("analyse_report_folder_taibao")
 
 # extract_by_year(analyse_report_folder_pingan)
-extract_by_year(analyse_report_folder_renbao)
+# extract_by_year(analyse_report_folder_renbao)
+# extract_by_year(analyse_report_folder_xinhua)
+# extract_by_year(analyse_report_folder_guoshou)
+# extract_by_year(analyse_report_folder_taibao)

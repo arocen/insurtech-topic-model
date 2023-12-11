@@ -17,6 +17,19 @@ cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pin
 analyse_report_folder_renbao = os.environ.get("analyse_report_folder_renbao")
 cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
 
+# 新华
+analyse_report_folder_xinhua = os.environ.get("analyse_report_folder_xinhua")
+cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
+
+# 国寿
+analyse_report_folder_guoshou = os.environ.get("analyse_report_folder_guoshou")
+cut_analyse_report_folder_guoshou = os.environ.get("cut_analyse_report_folder_guoshou")
+
+# 太保
+analyse_report_folder_taibao = os.environ.get("analyse_report_folder_taibao")
+cut_analyse_report_folder_taibao = os.environ.get("cut_analyse_report_folder_taibao")
+
+
 def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
     '''
     Return list of lists. 
@@ -52,4 +65,5 @@ def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
     return cutReportsByYear
 
 # cutRawByYear(analyse_report_folder_pingan, cut_analyse_report_folder_pingan)
-cutRawByYear(analyse_report_folder_renbao, cut_analyse_report_folder_renbao)
+# cutRawByYear(analyse_report_folder_renbao, cut_analyse_report_folder_renbao)
+cutRawByYear(analyse_report_folder_renbao, cut_analyse_report_folder_xinhua)
