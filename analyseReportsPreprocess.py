@@ -66,4 +66,6 @@ def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
 
 # cutRawByYear(analyse_report_folder_pingan, cut_analyse_report_folder_pingan)
 # cutRawByYear(analyse_report_folder_renbao, cut_analyse_report_folder_renbao)
-cutRawByYear(analyse_report_folder_renbao, cut_analyse_report_folder_xinhua)
+# cutRawByYear(analyse_report_folder_xinhua, cut_analyse_report_folder_xinhua)
+# cutRawByYear(analyse_report_folder_guoshou, cut_analyse_report_folder_guoshou)
+# cutRawByYear(analyse_report_folder_taibao, cut_analyse_report_folder_taibao)
