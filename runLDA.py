@@ -83,14 +83,29 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
 # bootstrapByYear(num_iterations=100)
 
 
-# Bootstrap samples on analyse reports about pingan
+# Bootstrap samples on analyse reports about 平安
 # 2015 to 2023 years
 # cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
 # bootstrapModels_pingan = os.environ.get("bootstrapModels_pingan")
 # bootstrapByYear(cut_news_folder=cut_analyse_report_folder_pingan, bootstrap_folder=bootstrapModels_pingan)
 
-# Bootstrap samples on analyse reports about renbao
+# Bootstrap samples on analyse reports about 人保
 # 2018 to 2023 years
-cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
-bootstrapModels_renbao = os.environ.get("bootstrapModels_renbao")
-bootstrapByYear(cut_news_folder=cut_analyse_report_folder_renbao, bootstrap_folder=bootstrapModels_renbao)
+# cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
+# bootstrapModels_renbao = os.environ.get("bootstrapModels_renbao")
+# bootstrapByYear(cut_news_folder=cut_analyse_report_folder_renbao, bootstrap_folder=bootstrapModels_renbao)
+
+# 新华
+# cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
+# bootstrapModels_xinhua = os.environ.get("bootstrapModels_xinhua")
+# bootstrapByYear(cut_news_folder=cut_analyse_report_folder_xinhua, bootstrap_folder=bootstrapModels_xinhua)
+
+# 太保
+# cut_analyse_report_folder_taibao = os.environ.get("cut_analyse_report_folder_taibao")
+# bootstrapModels_taibao = os.environ.get("bootstrapModels_taibao")
+# bootstrapByYear(cut_news_folder=cut_analyse_report_folder_taibao, bootstrap_folder=bootstrapModels_taibao)
+
+# 国寿
+# cut_analyse_report_folder_guoshou = os.environ.get("cut_analyse_report_folder_guoshou")
+# bootstrapModels_guoshou = os.environ.get("bootstrapModels_guoshou")
+# bootstrapByYear(cut_news_folder=cut_analyse_report_folder_guoshou, bootstrap_folder=bootstrapModels_guoshou)
