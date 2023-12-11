@@ -105,7 +105,10 @@ def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_fold
     # divide all values by number of bootstrap samples
     KL_year_company = KL_year_company.div(count)
     print(KL_year_company)
-    KL_save_path = os.path.join(KL_save_folder, os.path.splitext(os.path.basename(refer_corpus_path))[0] + "_bootstrap_newsByYear" + ".xlsx")
+
+    refer_name = os.path.splitext(os.path.basename(refer_corpus_path))[0]
+    company_name = os.path.splitext(os.path.basename(news_corpus_folder))[0].split('_')[1]
+    KL_save_path = os.path.join(KL_save_folder, refer_name + "_" + company_name + "_bootstrap_analyseReportsByYear" + ".xlsx")
     KL_year_company.to_excel(KL_save_path)
     return
 
@@ -153,12 +156,20 @@ def getSampleTimesPerDoc(indices, years):
 # computeByYear(newsModelsFolder, refer_corpus_path2, news_corpus_folder, KL_save_folder)
 
 # bootstrap_folder = os.environ.get("bootstrap_folder")
-# bootstrap_folder = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
-bootstrap_folder = os.environ.get("bootstrapModels_renbao") # renbao analyse reports models
-cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_renbao")
-indices_path = os.path.join(bootstrap_folder, "indices.xlsx")
-computeBootstrapByYear(bootstrap_folder, refer_corpus_path, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
+# bootstrap_folder_pingan = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
 
+
+# 人保
+# bootstrap_folder_renbao = os.environ.get("bootstrapModels_renbao") # renbao analyse reports models
+# cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
+# indices_path = os.path.join(bootstrap_folder, "indices.xlsx")
+# computeBootstrapByYear(bootstrap_folder_renbao, refer_corpus_path, cut_analyse_report_folder_renbao, KL_save_folder, indices_path)
+
+# 新华
+bootstrap_folder_xinhua = os.environ.get("bootstrapModels_xinhua")
+cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
+indices_path = os.path.join(bootstrap_folder_xinhua, "indices.xlsx")
+computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path, cut_analyse_report_folder_xinhua, KL_save_folder, indices_path)
 
 
 
