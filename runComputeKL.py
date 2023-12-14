@@ -26,9 +26,8 @@ def run(df, model_path, refer_corpus_path, news_path, year, sample_index):
     model = LdaModel.load(model_path)  # Your model trained on news reports
 
     with open(news_path, "r", encoding="utf-8") as f:
-        with open(news_path, "r", encoding="utf-8") as f:
-            text = f.read()
-            news_corpus = text.split(doc_div_chars)
+        text = f.read()
+        news_corpus = text.split(doc_div_chars)
 
     with open(refer_corpus_path, "r", encoding="utf-8") as f:
         reference_corpus = f.read()
