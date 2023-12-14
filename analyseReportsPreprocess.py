@@ -69,3 +69,9 @@ def cutRawByYear(parent_folder:str, save_folder:str)->list[list[str]]:
 # cutRawByYear(analyse_report_folder_xinhua, cut_analyse_report_folder_xinhua)
 # cutRawByYear(analyse_report_folder_guoshou, cut_analyse_report_folder_guoshou)
 # cutRawByYear(analyse_report_folder_taibao, cut_analyse_report_folder_taibao)
+
+
+
+# 人保2015、2016
+renbao_2015_2016_folder=os.environ.get("renbao_2015_2016_folder")
+cutRawByYear(renbao_2015_2016_folder, renbao_2015_2016_folder)
