@@ -73,3 +73,6 @@ refer_corpus_path = os.environ.get('cut_refer')    # corpus about InsurTech
 # calcKL(os.path.join(model_save_folder_2015, "2015"), cut_renbao_2015, refer_corpus_path)
 
 # calcKL(os.path.join(model_save_folder_2016, "2016"), cut_renbao_2016, refer_corpus_path)
+
+# Warning: KL divergence turns out to be fairly low because single report document is mainly about 1 topic.
+#          So after inference, most terms are assigned to that main topic, showing a wrong image that the 2 distributions are very similar.
