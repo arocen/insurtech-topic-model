@@ -8,27 +8,30 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Load x (InsurTech index)
-InsurTech_path = os.environ.get("report_insurtech_index")
-index_df = pd.read_excel(InsurTech_path, "rescale", index_col=0)
+def regression1(input_df):
+    '''Assume: number of complaints = β0 + β1 * InsurTech index + β2 * Premium income'''
+    # Do regression for all companies first
+    X = input_df[["保险科技指标", "原保费收入"]]
+    X = sm.add_constant(X)
+    y = input_df["总投诉量"]
 
-# Load y (Number of complaints)
-complaints_path = os.environ.get("complaints")
-complaints_df = pd.read_excel(complaints_path, "总投诉量", index_col=0)
+    model = sm.OLS(y, X).fit()
+    print(model.summary())
+    return
 
-# Take the logarithm
-numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-for c in [c for c in complaints_df.columns if complaints_df[c].dtype in numerics]:
-    complaints_df[c] = np.log10(complaints_df[c])
+def regressionAvg(input_df):
+    '''Assume: number of complaints / Premium income = β0 + β1 * InsurTech index'''
+    X = input_df["保险科技指标"]
+    X = sm.add_constant(X)
+    y = input_df["亿元保费投诉量"]
 
-# Load premium income
-income_path = os.environ.get("premium_income")
-income_df = pd.read_excel(income_path, "原保费收入", index_col=0)
+    model = sm.OLS(y, X).fit()
+    print(model.summary())
+    return
 
-# Loop and do regressions
-for company in list(index_df.index):
-    X = index_df.loc[company] + income_df.loc[company]
-    print(X)
-    # X = sm.add_constant(X)
-    # model = sm.OLS(complaints_df.loc[company], X).fit()
-    # print(model.summary())
+
+# Load all input variables from 1 sheet
+input_variables_path = os.environ.get("input_variables")
+input_df = pd.read_excel(input_variables_path, "input")
+
+
