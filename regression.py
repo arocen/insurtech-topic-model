@@ -96,6 +96,23 @@ def logarithm(df):
         df[c] = np.log10(df[c])
     return df
 
+def regressionLagged(input_df:pd.DataFrame):
+    '''Include lagged dependent variables. Drop rows of 人保 in 2015, 2016, 2017.'''
+    input_df = input_df.drop([0, 1, 2])
+
+
+    # Error: Rewrite this line1 to shift 1 year per company, and elimate NaN values!
+    lagged_y = input_df['总投诉量'].shift(1)  # Shift the dependent variable by one period
+    print(lagged_y)
+
+
+    X = input_df[['保险科技指标', '原保费收入']]
+    X = sm.add_constant(X)
+    X['lagged_y'] = lagged_y
+    
+    model = sm.OLS(input_df['总投诉量'], X).fit()
+    print(model.summary())
+    return
 
 # Load all input variables from 1 sheet
 input_variables_path = os.environ.get("input_variables")
@@ -105,4 +122,5 @@ input_df = pd.read_excel(input_variables_path, "input")
 # regressionAvg(input_df)
 # regressionRm(input_df)
 # regressionLog(input_df)
-regressionAvgRm(input_df)
+# regressionAvgRm(input_df)
+regressionLagged(input_df)
