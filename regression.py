@@ -30,6 +30,21 @@ def regressionAvg(input_df):
     print(model.summary())
     return
 
+def regressionAvgRm(input_df):
+    '''
+    Remove rows of 人保 in 2015, 2016, 2017.
+    Assume: number of complaints / Premium income = β0 + β1 * InsurTech index
+    '''
+    input_df = input_df.drop([0, 1, 2])
+    X = input_df["保险科技指标"]
+    X = sm.add_constant(X)
+    y = input_df["亿元保费投诉量"]
+
+    model = sm.OLS(y, X).fit()
+    print(model.summary())
+    return
+
+
 def regressionRm(input_df:pd.DataFrame):
     '''
     Remove rows of 人保 in 2015, 2016, 2017.
@@ -57,6 +72,29 @@ def checkVif(X):
     print(vif_data)
     return
 
+def regressionLog(input_df):
+    '''
+    Take the logarithm to number of complaints and Premium income. Drop rows of 人保 in 2015, 2016, 2017.
+    Assume: log(number of complaints) = β0 + β1 * InsurTech index + β2 * log(Premium income)
+    '''
+    input_df = input_df.drop([0, 1, 2])
+    input_df[["总投诉量", "原保费收入"]] = logarithm(input_df[["总投诉量", "原保费收入"]])
+    print(input_df)
+    X = input_df[["保险科技指标", "原保费收入"]]
+    
+    X = sm.add_constant(X)
+    y = input_df["总投诉量"]
+
+    model = sm.OLS(y, X).fit()
+    print(model.summary())
+    return
+
+def logarithm(df):
+    '''A helper function that takes the logarithm to all columns of df.'''
+    numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+    for c in [c for c in df.columns if df[c].dtype in numerics]:
+        df[c] = np.log10(df[c])
+    return df
 
 
 # Load all input variables from 1 sheet
@@ -65,4 +103,6 @@ input_df = pd.read_excel(input_variables_path, "input")
 
 
 # regressionAvg(input_df)
-regressionRm(input_df)
+# regressionRm(input_df)
+# regressionLog(input_df)
+regressionAvgRm(input_df)
