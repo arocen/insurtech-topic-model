@@ -113,10 +113,13 @@ def regressionLagged(input_df:pd.DataFrame):
 # Load all input variables from 1 sheet
 input_variables_path = os.environ.get("input_variables")
 input_df = pd.read_excel(input_variables_path, "input")
-
+inputEst_df = pd.read_excel(input_variables_path, "input_est")   # In this sheet, a different method is used to estimate number of complaints in 2023.
 
 # regressionAvg(input_df)
 # regressionRm(input_df)
 # regressionLog(input_df)
 # regressionAvgRm(input_df)
-regressionLagged(input_df)
+# regressionLagged(input_df)
+
+# use inputEst_df
+regressionRm(inputEst_df)
