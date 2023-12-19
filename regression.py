@@ -45,16 +45,19 @@ def regressionAvgRm(input_df):
     return
 
 
-def regressionRm(input_df:pd.DataFrame):
+def regressionRm(input_df:pd.DataFrame, columns:list[str]=["保险科技指标", "原保费收入"], VIF:bool=False):
     '''
     Remove rows of 人保 in 2015, 2016, 2017.
     Assume: number of complaints = β0 + β1 * InsurTech index + β2 * Premium income
     '''
     input_df = input_df.drop([0, 1, 2])
-    print(input_df)
+    # print(input_df)
 
-    X = input_df[["保险科技指标", "原保费收入"]]
-    checkVif(X)
+    X = input_df[columns]
+    print(X)
+    
+    if VIF:
+        checkVif(X)
 
     X = sm.add_constant(X)
     y = input_df["总投诉量"]
@@ -122,4 +125,4 @@ inputEst_df = pd.read_excel(input_variables_path, "input_est")   # In this sheet
 # regressionLagged(input_df)
 
 # use inputEst_df
-regressionRm(inputEst_df)
+regressionRm(inputEst_df, columns=["保险科技指标", "原保费收入", "赔付支出"])
