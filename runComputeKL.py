@@ -158,29 +158,37 @@ def getSampleTimesPerDoc(indices, years):
 # bootstrap_folder_pingan = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
 
 
+
+# Pay attention to the refer corpus path used when running.
 # 人保
 # bootstrap_folder_renbao = os.environ.get("bootstrapModels_renbao") # renbao analyse reports models
 # cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
-# indices_path = os.path.join(bootstrap_folder, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_renbao, refer_corpus_path, cut_analyse_report_folder_renbao, KL_save_folder, indices_path)
+# indices_path = os.path.join(bootstrap_folder_renbao, "indices.xlsx")
+# computeBootstrapByYear(bootstrap_folder_renbao, refer_corpus_path2, cut_analyse_report_folder_renbao, KL_save_folder, indices_path)
 
-# 新华
+# # 新华
 # bootstrap_folder_xinhua = os.environ.get("bootstrapModels_xinhua")
 # cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
 # indices_path = os.path.join(bootstrap_folder_xinhua, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path, cut_analyse_report_folder_xinhua, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path2, cut_analyse_report_folder_xinhua, KL_save_folder, indices_path)
 
-# 太保
+# # 太保
 # bootstrap_folder_taibao = os.environ.get("bootstrapModels_taibao")
 # cut_analyse_report_folder_taibao = os.environ.get("cut_analyse_report_folder_taibao")
 # indices_path = os.path.join(bootstrap_folder_taibao, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_taibao, refer_corpus_path, cut_analyse_report_folder_taibao, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_taibao, refer_corpus_path2, cut_analyse_report_folder_taibao, KL_save_folder, indices_path)
 
-# 国寿
+# # 国寿
 # bootstrap_folder_guoshou = os.environ.get("bootstrapModels_guoshou")
 # cut_analyse_report_folder_guoshou = os.environ.get("cut_analyse_report_folder_guoshou")
 # indices_path = os.path.join(bootstrap_folder_guoshou, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_guoshou, refer_corpus_path, cut_analyse_report_folder_guoshou, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_guoshou, refer_corpus_path2, cut_analyse_report_folder_guoshou, KL_save_folder, indices_path)
+
+# # 平安
+# bootstrap_folder_pingan = os.environ.get("bootstrapModels_pingan")
+# cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
+# indices_path = os.path.join(bootstrap_folder_pingan, "indices.xlsx")
+# computeBootstrapByYear(bootstrap_folder_pingan, refer_corpus_path2, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
 
 # if __name__ == "__main__":
 #     import doctest

@@ -5,6 +5,11 @@ import newsPreprocess as npre
 from tqdm import tqdm
 from dotenv import load_dotenv
 import pandas as pd
+import numpy as np
+from gensim import corpora
+from gensim.models import LdaModel
+from gensim.utils import simple_preprocess
+
 load_dotenv()
 
 sample_corpus_path = os.environ.get("sample_corpus_path")
@@ -75,6 +80,45 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
     indices.to_excel(os.path.join(bootstrap_folder, "indices.xlsx"))
     return
 
+def loadAllCorpus()->list[list[str]]:
+    '''Load sorted all cut corpus.'''
+    all_corpus = []
+    names = ["cut_analyse_report_folder_pingan", "cut_analyse_report_folder_renbao", "cut_analyse_report_folder_xinhua",
+                 "cut_analyse_report_folder_taibao", "cut_analyse_report_folder_guoshou"]
+    for name in names:
+        path = os.environ.get(name)
+        corpus_by_year = npre.load_preprocessed_multi_corpus(path)
+        corpus = [doc for doc_in_same_year in corpus_by_year for doc in doc_in_same_year]
+        all_corpus.extend(corpus)
+    all_corpus = sorted(all_corpus)
+    return all_corpus
+    
+
+def bootstrapAllCompanies(num_topics=15, sample_percent=0.9, num_iterations=100, save_folder=os.environ.get("bootstrapModelAllAnalyseReports")):
+    '''Bootstrap sample in all analyse reports.'''
+    all_corpus = loadAllCorpus()
+    indices = pd.DataFrame()
+    for i in tqdm(range(num_iterations)):
+        
+        # set replace=False to ensure indices are unique
+        sample_indices = np.random.choice(len(all_corpus), size=int(sample_percent * len(all_corpus)), replace=False)
+        sampled_corpus = [all_corpus[i] for i in sample_indices]
+
+        # Create dictionary and bag of words
+        tokenized_data = [simple_preprocess(doc) for doc in sampled_corpus]
+        dictionary = corpora.Dictionary(tokenized_data)
+        bow_corpus = [dictionary.doc2bow(doc) for doc in tokenized_data]
+
+        lda_model = LdaModel(bow_corpus, num_topics=num_topics, id2word=dictionary)
+
+        save_path = os.path.join(save_folder, "iter" + str(i))
+        lda_model.save(save_path)  # save sample
+        indices.at[i, "all_corpus"] = str(sample_indices.tolist())
+    # save indices
+    indices.to_excel(os.path.join(save_folder, "indices.xlsx"))
+    return
+    
+
 
 # Bootstrap sample. 100 samples, 90% news reports.
 # Derive topic distribution of reference document based on bootstrap samples. (reference documents are not included in the corpus of LDA)
@@ -109,3 +153,7 @@ def bootstrapByYear(num_topics=15, cut_news_folder=cut_news_folder, bootstrap_fo
 # cut_analyse_report_folder_guoshou = os.environ.get("cut_analyse_report_folder_guoshou")
 # bootstrapModels_guoshou = os.environ.get("bootstrapModels_guoshou")
 # bootstrapByYear(cut_news_folder=cut_analyse_report_folder_guoshou, bootstrap_folder=bootstrapModels_guoshou)
+
+
+# Bootstrap sample in all reports
+# bootstrapAllCompanies()
