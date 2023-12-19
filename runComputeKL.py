@@ -166,6 +166,9 @@ def computeAllCorpus():
 
 def isModelNameWithoutYear(filename):
     '''
+    Check if a filename is the format of LDA models based on all analyse reports.
+    Helper function of computeAllCorpus().
+
     >>> import re
     >>> isModelNameWithoutYear("2016_iter0")
     False
@@ -180,6 +183,22 @@ def isModelNameWithoutYear(filename):
         return True
     else:
         return False
+    
+def getIterFromNameWithoutYear(filename):
+    '''
+    Get iterate number from file name of LDA models based on all analyse reports.
+    Helper function of computeAllCorpus().
+
+    >>> import re
+    >>> getIterFromNameWithoutYear("iter99")
+    99
+    >>> getIterFromNameWithoutYear("iter20")
+    22
+    '''
+
+    pattern = r"^iter(\d+)$"
+    iternum = re.findall(pattern, filename)[0]
+    return int(iternum)
 
 # computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
 
