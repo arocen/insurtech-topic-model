@@ -158,8 +158,28 @@ def computeAllCorpus():
     indices_path = os.path.join(bootstrap_folder_all, "indices.xlsx")
     
     # To-do: finish rest part
+
+
+    
     # computeKL.kl_divergence(df, model, reference_corpus, news_corpus, dictionary_news, year, sample_index)
     return
+
+def isModelNameWithoutYear(filename):
+    '''
+    >>> import re
+    >>> isModelNameWithoutYear("2016_iter0")
+    False
+    >>> isModelNameWithoutYear("iter99")
+    True
+    >>> isModelNameWithoutYear("iter23.id2word")
+    False
+    '''
+    pattern = r"^iter\d+$"
+    match = re.match(pattern, filename)
+    if match:
+        return True
+    else:
+        return False
 
 # computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
 
@@ -204,6 +224,6 @@ def computeAllCorpus():
 
 
 
-# if __name__ == "__main__":
-#     import doctest
-#     doctest.testmod()
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
