@@ -8,6 +8,7 @@ import pandas as pd
 from tqdm import tqdm
 import re
 import ast
+import runLDA
 
 load_dotenv()
 
@@ -149,6 +150,17 @@ def getSampleTimesPerDoc(indices, years):
 
     return count
 
+def computeAllCorpus():
+    '''Compute KL divergence based on LDA models bootstraped from all analyse reports.'''
+    # All analyse reports
+    bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
+    all_corpus = runLDA.loadAllCorpus()
+    indices_path = os.path.join(bootstrap_folder_all, "indices.xlsx")
+    
+    # To-do: finish rest part
+    # computeKL.kl_divergence(df, model, reference_corpus, news_corpus, dictionary_news, year, sample_index)
+    return
+
 # computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
 
 # use a paper less related to InsurTech as reference document to validate that the index declines if topics are unrelated
@@ -189,6 +201,8 @@ def getSampleTimesPerDoc(indices, years):
 # cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
 # indices_path = os.path.join(bootstrap_folder_pingan, "indices.xlsx")
 # computeBootstrapByYear(bootstrap_folder_pingan, refer_corpus_path2, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
+
+
 
 # if __name__ == "__main__":
 #     import doctest
