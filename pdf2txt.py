@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-file_address = os.environ.get("pdf_to_extract")
+file_address = os.environ.get("pdf_to_extract5")
 res_pdf = pdfplumber.open(file_address)
 
 # 提取文本信息

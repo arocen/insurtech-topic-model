@@ -156,4 +156,4 @@ def bootstrapAllCompanies(num_topics=15, sample_percent=0.9, num_iterations=100,
 
 
 # Bootstrap sample in all reports
-# bootstrapAllCompanies()
+# bootstrapAllCompanies(num_topics=45, save_folder=os.environ.get("bootstrapModelAllAnalyseReports45topics"))

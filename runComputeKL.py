@@ -59,7 +59,7 @@ def computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_sa
     KL_year_company.to_excel(KL_save_path)
     return
 
-def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder, indices_path):
+def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder, indices_path, doc_num=100):
 
     years = npre.getYearFromFilename(news_corpus_folder) # The default parameter here must change according to corpus selected.
     
@@ -85,7 +85,7 @@ def computeBootstrapByYear(newsModelsFolder, refer_corpus_path, news_corpus_fold
     
     
     # print(years)
-    KL_year_company = pd.DataFrame(columns=years, index=range(2062)) # set index with the range of most reports in each year
+    KL_year_company = pd.DataFrame(columns=years, index=range(doc_num)) # set index with the range of most reports in each year
     for curr_year_paths, newsCorpusPath, year in zip(ModelPathGroup, newsCorpusPathList, tqdm(years)):
         # compute K-L with each sample model
         for ModelPath in tqdm(curr_year_paths):
@@ -265,7 +265,7 @@ refer_corpus_path = os.environ.get('cut_refer')    # corpus about InsurTech
 refer_corpus_path2 = os.environ.get('cut_refer2')  # corpus about insurance instead of Insurtech
 refer_corpus_path3 = os.environ.get("cut_refer3")  # another corpus about InsurTech
 refer_corpus_path4 = os.environ.get("cut_refer4")  # another corpus about InsurTech
-
+refer_corpus_path5 = os.environ.get('cut_refer5')  # corpus about insurance
 doc_div_chars = os.environ.get("doc_div_chars")
 
 newsModelsFolder = os.environ.get("modelByYear_folder")
@@ -283,45 +283,62 @@ KL_save_folder = os.environ.get("KL_save_folder")
 # bootstrap_folder_pingan = os.environ.get("bootstrapModels_pingan")    # pingan analyse reports models
 
 
+KL_save_folder_refer3_by_company = os.environ.get("KL_save_folder_refer3_by_company")
+
 
 # Pay attention to the refer corpus path used when running.
-# 人保
+# # 人保
 # bootstrap_folder_renbao = os.environ.get("bootstrapModels_renbao") # renbao analyse reports models
 # cut_analyse_report_folder_renbao = os.environ.get("cut_analyse_report_folder_renbao")
 # indices_path = os.path.join(bootstrap_folder_renbao, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_renbao, refer_corpus_path2, cut_analyse_report_folder_renbao, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_renbao, refer_corpus_path3, cut_analyse_report_folder_renbao, KL_save_folder_refer3_by_company, indices_path)
 
 # # 新华
 # bootstrap_folder_xinhua = os.environ.get("bootstrapModels_xinhua")
 # cut_analyse_report_folder_xinhua = os.environ.get("cut_analyse_report_folder_xinhua")
 # indices_path = os.path.join(bootstrap_folder_xinhua, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path2, cut_analyse_report_folder_xinhua, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_xinhua, refer_corpus_path3, cut_analyse_report_folder_xinhua, KL_save_folder_refer3_by_company, indices_path)
 
 # # 太保
 # bootstrap_folder_taibao = os.environ.get("bootstrapModels_taibao")
 # cut_analyse_report_folder_taibao = os.environ.get("cut_analyse_report_folder_taibao")
 # indices_path = os.path.join(bootstrap_folder_taibao, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_taibao, refer_corpus_path2, cut_analyse_report_folder_taibao, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_taibao, refer_corpus_path3, cut_analyse_report_folder_taibao, KL_save_folder_refer3_by_company, indices_path)
 
 # # 国寿
 # bootstrap_folder_guoshou = os.environ.get("bootstrapModels_guoshou")
 # cut_analyse_report_folder_guoshou = os.environ.get("cut_analyse_report_folder_guoshou")
 # indices_path = os.path.join(bootstrap_folder_guoshou, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_guoshou, refer_corpus_path2, cut_analyse_report_folder_guoshou, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_guoshou, refer_corpus_path3, cut_analyse_report_folder_guoshou, KL_save_folder_refer3_by_company, indices_path)
 
 # # 平安
 # bootstrap_folder_pingan = os.environ.get("bootstrapModels_pingan")
 # cut_analyse_report_folder_pingan = os.environ.get("cut_analyse_report_folder_pingan")
 # indices_path = os.path.join(bootstrap_folder_pingan, "indices.xlsx")
-# computeBootstrapByYear(bootstrap_folder_pingan, refer_corpus_path2, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
+# computeBootstrapByYear(bootstrap_folder_pingan, refer_corpus_path3, cut_analyse_report_folder_pingan, KL_save_folder_refer3_by_company, indices_path)
 
 
 # All analyse reports
 # computeAllCorpus(refer_corpus_path)
 
 # All analyse reports simple average
-# computeAllCorpusSimpleAverage(refer_corpus_path2)
-computeAllCorpusSimpleAverage(refer_corpus_path4)
+# computeAllCorpusSimpleAverage(refer_corpus_path)
+# computeAllCorpusSimpleAverage(refer_corpus_path3)
+
+# use models of 45 topics
+# computeAllCorpusSimpleAverage(refer_corpus_path, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
+# computeAllCorpusSimpleAverage(refer_corpus_path2, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
+# computeAllCorpusSimpleAverage(refer_corpus_path3, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
+# computeAllCorpusSimpleAverage(refer_corpus_path4, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
+# computeAllCorpusSimpleAverage(refer_corpus_path5, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
+
+# Use average per doc instead
+computeAllCorpus(refer_corpus_path, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+computeAllCorpus(refer_corpus_path2, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+computeAllCorpus(refer_corpus_path3, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+computeAllCorpus(refer_corpus_path4, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+computeAllCorpus(refer_corpus_path5, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+
 
 # if __name__ == "__main__":
 #     import doctest
