@@ -12,7 +12,8 @@ stopwords_path = os.environ.get('stopwords_path')
 
 def load_stopwords(stopwords_path)->list[str]:
     with open(stopwords_path, "r", encoding="utf-8") as f:
-        stopwords = f.readlines()
+        stopwords = f.read().splitlines()    # bug fix: added .splitlines()
+
     return stopwords
 
 
@@ -22,7 +23,6 @@ def cutAndSave(refer_path, dict_path=refer_cut_dict_path, save_path=save_path, s
     stopwords = load_stopwords(stopwords_path)
     with open(refer_path, "r", encoding="utf-8") as f:
         text = f.read()
-
     if dict_path:
         # 让jieba加载自定义词典
         jieba.load_userdict(dict_path)
@@ -37,5 +37,7 @@ def cutAndSave(refer_path, dict_path=refer_cut_dict_path, save_path=save_path, s
 
 refer_path = os.environ.get('refer_doc_path')
 refer_path2 = os.environ.get('refer_doc_path_2')
+refer_path3 = os.environ.get('refer_doc_path_3')
+refer_path4 = os.environ.get('refer_doc_path_4')
 cut_refer_save_path2 = os.environ.get('cut_refer2')
 cutAndSave(refer_path2, save_path=cut_refer_save_path2)

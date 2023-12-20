@@ -16,12 +16,7 @@ load_dotenv()
 # num_topics = 10
 # num_words = 1000
 
-# sample_model_path = os.environ.get("sample_model_save_path")
-# sample_corpus_path = os.environ.get("sample_corpus_path")
-refer_corpus_path = os.environ.get('cut_refer')    # corpus about InsurTech
-refer_corpus_path2 = os.environ.get('cut_refer2')  # corpus about insurance instead of Insurtech
 
-doc_div_chars = doc_div_chars = os.environ.get("doc_div_chars")
 
 def run(df, model_path, refer_corpus_path, news_path, year, sample_index):
     model = LdaModel.load(model_path)  # Your model trained on news reports
@@ -39,13 +34,10 @@ def run(df, model_path, refer_corpus_path, news_path, year, sample_index):
     computeKL.kl_divergence(df, model, reference_corpus, news_corpus, dictionary_news, year, sample_index)
     return
 
-# run(refer_model_path, sample_model_path, refer_corpus_path, sample_corpus_path)
-# run(refer_model_path2, sample_model_path, refer_corpus_path2, sample_corpus_path)
 
 
-newsModelsFolder = os.environ.get("modelByYear_folder")
-news_corpus_folder = os.environ.get("cut_result_by_year")
-KL_save_folder = os.environ.get("KL_save_folder")
+
+
 
 def computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder):
     '''Compute K-L divergence of reference document and corpus of each year's news, save results as Excel file.'''
@@ -269,6 +261,18 @@ def getSampleTimesPerDocWithoutYear(indices, column_label="all_corpus"):
     return count
 
 
+refer_corpus_path = os.environ.get('cut_refer')    # corpus about InsurTech
+refer_corpus_path2 = os.environ.get('cut_refer2')  # corpus about insurance instead of Insurtech
+refer_corpus_path3 = os.environ.get("cut_refer3")  # another corpus about InsurTech
+refer_corpus_path4 = os.environ.get("cut_refer4")  # another corpus about InsurTech
+
+doc_div_chars = os.environ.get("doc_div_chars")
+
+newsModelsFolder = os.environ.get("modelByYear_folder")
+news_corpus_folder = os.environ.get("cut_result_by_year")
+KL_save_folder = os.environ.get("KL_save_folder")
+
+
 
 # computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
 
@@ -316,7 +320,8 @@ def getSampleTimesPerDocWithoutYear(indices, column_label="all_corpus"):
 # computeAllCorpus(refer_corpus_path)
 
 # All analyse reports simple average
-computeAllCorpusSimpleAverage(refer_corpus_path)
+# computeAllCorpusSimpleAverage(refer_corpus_path2)
+computeAllCorpusSimpleAverage(refer_corpus_path4)
 
 # if __name__ == "__main__":
 #     import doctest
