@@ -120,3 +120,26 @@ def kl_divergence_without_year_simple_average(ith_model, df, model, reference_do
         print("Error: Something must be wrong since you write different results to a same cell.")
 
     return
+
+
+def kl_divergence_mutal_refer(ith_model, df, model, reference_doc1:str, reference_doc2:str, dictionary_reports, column_name):
+    '''
+    Calculate KL divergence of topic distributions of 2 input reference documents, based on trained LDA model.
+    '''
+    reports_id2word =  dictionary_reports
+    bow_refer1 = reports_id2word.doc2bow(reference_doc1.split())
+    reference_topics1 = model.get_document_topics(bow_refer1, minimum_probability=0.000000000001)
+
+    bow_refer2 = reports_id2word.doc2bow(reference_doc2.split())
+    reference_topics2 = model.get_document_topics(bow_refer2, minimum_probability=0.000000000001)
+
+    
+    KL = kullback_leibler(reference_topics1, reference_topics2)
+    # print(KL)
+
+    if pd.isna(df.at[ith_model, column_name]):
+        df.at[ith_model, column_name] = KL
+    else:
+        print("Error: Something must be wrong since you are writing results from different models to a same cell.")
+
+    return

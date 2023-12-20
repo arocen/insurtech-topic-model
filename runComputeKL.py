@@ -9,6 +9,7 @@ from tqdm import tqdm
 import re
 import ast
 import runLDA
+from itertools import combinations
 
 load_dotenv()
 
@@ -201,7 +202,7 @@ def computeAllCorpusSimpleAverage(refer_corpus_path, modelsFolder=os.environ.get
         dictionary_reports = corpora.Dictionary.load(model_path + ".id2word")
 
         # Compute KL
-        computeKL.kl_divergence_without_year_simple_average(i, KL_df, model, reference_corpus, all_corpus, dictionary_reports, sample_index, column_name="all_corpus")
+        computeKL.kl_divergence_without_year_simple_average(iternum, KL_df, model, reference_corpus, all_corpus, dictionary_reports, sample_index, column_name="all_corpus")
     
     print(KL_df)
 
@@ -259,6 +260,48 @@ def getSampleTimesPerDocWithoutYear(indices, column_label="all_corpus"):
                 count.at[index, column_label] += 1
 
     return count
+
+
+def run_kl_divergence_mutal_refer(refer_corpus_path_list:list[str], modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports"), KL_save_folder=os.environ.get("KL_save_folder")):
+    
+    bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
+    modelnames = [f for f in os.listdir(modelsFolder) if isModelNameWithoutYear(f)]
+
+    
+    # Save refer name and refer corpus in a dictionary
+    reference_corpus = dict()
+    for refer_path in refer_corpus_path_list:
+        with open(refer_path, "r", encoding="utf-8") as f:
+            refer_name = os.path.basename(refer_path).split(".")[0]
+            reference_corpus[refer_name] = f.read()
+    
+    refer_combinations = get_refer_combinations(reference_corpus.keys())
+    print(refer_combinations)
+    column_names = [refer_pair[0][4:] + " vs " + refer_pair[1][4:] for refer_pair in refer_combinations]
+    KL_df = pd.DataFrame(columns=column_names, index=range(100))
+    for i, modelname in tqdm(enumerate(modelnames)):
+        model_path = os.path.join(bootstrap_folder_all, modelname)
+        model = LdaModel.load(model_path)
+        dictionary_reports = corpora.Dictionary.load(model_path + ".id2word")
+        iternum = getIterFromNameWithoutYear(modelname)
+
+        # Compute KL
+        for combination in refer_combinations:
+            column_name = combination[0][4:] + " vs " + combination[1][4:]
+            computeKL.kl_divergence_mutal_refer(iternum, KL_df, model, reference_corpus[combination[0]], reference_corpus[combination[1]], dictionary_reports, column_name)
+    
+    print(KL_df)
+
+    KL_save_path = os.path.join(KL_save_folder, "all_analyse_reports_bootstrap_sample_mutal_refer.xlsx")
+    KL_df.to_excel(KL_save_path)
+    return
+
+
+def get_refer_combinations(reference_corpus:list[str])->list[tuple]:
+    '''Get non-repeating combinations of 2 reference documents from a list.'''
+    return list(combinations(reference_corpus, 2))
+
+
 
 
 refer_corpus_path = os.environ.get('cut_refer')    # corpus about InsurTech
@@ -325,7 +368,7 @@ KL_save_folder_refer3_by_company = os.environ.get("KL_save_folder_refer3_by_comp
 # computeAllCorpusSimpleAverage(refer_corpus_path)
 # computeAllCorpusSimpleAverage(refer_corpus_path3)
 
-# use models of 45 topics
+# Use models of 45 topics
 # computeAllCorpusSimpleAverage(refer_corpus_path, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
 # computeAllCorpusSimpleAverage(refer_corpus_path2, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
 # computeAllCorpusSimpleAverage(refer_corpus_path3, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
@@ -333,12 +376,15 @@ KL_save_folder_refer3_by_company = os.environ.get("KL_save_folder_refer3_by_comp
 # computeAllCorpusSimpleAverage(refer_corpus_path5, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports45topics"), KL_save_folder=os.environ.get("KL_save_folder_45topics"))
 
 # Use average per doc instead
-computeAllCorpus(refer_corpus_path, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
-computeAllCorpus(refer_corpus_path2, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
-computeAllCorpus(refer_corpus_path3, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
-computeAllCorpus(refer_corpus_path4, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
-computeAllCorpus(refer_corpus_path5, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+# computeAllCorpus(refer_corpus_path, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+# computeAllCorpus(refer_corpus_path2, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+# computeAllCorpus(refer_corpus_path3, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+# computeAllCorpus(refer_corpus_path4, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
+# computeAllCorpus(refer_corpus_path5, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
 
+# Refer combinations
+refer_path_list = [refer_corpus_path, refer_corpus_path2, refer_corpus_path3, refer_corpus_path4, refer_corpus_path5]
+run_kl_divergence_mutal_refer(refer_path_list)
 
 # if __name__ == "__main__":
 #     import doctest

@@ -41,4 +41,6 @@ inputEst_df = pd.read_excel(input_variables_path, "input_est", skiprows=[1, 2, 3
 # runModel(inputEst_df, ['保险科技指标', '赔付率'])
 # runModel(inputEst_df, ['保险科技指标', '赔付率'], y_label="log_总投诉量")
 # runModel(inputEst_df, ['保险科技指标', '原保费收入', '赔付支出'], cov_type='robust')
-runModel(inputEst_df, ['保险科技指标', '原保费收入', '赔付支出'], cov_type='robust', year_fe=False)
+# runModel(inputEst_df, ['保险科技指标_refer3', '原保费收入', '赔付支出'], cov_type='robust', year_fe=False)
+# runModel(inputEst_df, ['保险科技指标', '原保费收入', '赔付支出'], cov_type='robust', year_fe=False)
+# runModel(inputEst_df, ['保险科技指标', '原保费收入', '赔付支出'], cov_type='robust', year_fe=True)
