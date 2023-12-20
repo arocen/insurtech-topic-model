@@ -150,20 +150,21 @@ def getSampleTimesPerDoc(indices, years):
 
     return count
 
-def computeAllCorpus(refer_corpus_path, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports")):
+def computeAllCorpus(refer_corpus_path, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports"), KL_save_folder=os.environ.get("KL_save_folder")):
     '''Compute KL divergence based on LDA models bootstraped from all analyse reports.'''
     # All analyse reports
     bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
     all_corpus = runLDA.loadAllCorpus()
     indices_path = os.path.join(bootstrap_folder_all, "indices.xlsx")
     indices = pd.read_excel(indices_path)
-    df = pd.DataFrame(columns=["all_corpus"])
+
 
     modelnames = [f for f in os.listdir(modelsFolder) if isModelNameWithoutYear(f)]
     with open(refer_corpus_path, "r", encoding="utf-8") as f:
         reference_corpus = f.read()
     
     # Loop models
+    KL_df = pd.DataFrame(columns=["all_corpus"], index=range(1200))
     for modelname in modelnames:
         model_path = os.path.join(bootstrap_folder_all, modelname)
         iternum = getIterFromNameWithoutYear(modelname)
@@ -172,17 +173,16 @@ def computeAllCorpus(refer_corpus_path, modelsFolder=os.environ.get("bootstrapMo
         dictionary_reports = corpora.Dictionary.load(model_path + ".id2word")
 
         # Compute KL
-        computeKL.kl_divergence_without_year(df, model, reference_corpus, all_corpus, dictionary_reports, sample_index, column_name="all_corpus")
+        computeKL.kl_divergence_without_year(KL_df, model, reference_corpus, all_corpus, dictionary_reports, sample_index, column_name="all_corpus")
     
     # divide all values by number of bootstrap samples
+    count = getSampleTimesPerDocWithoutYear(indices)
+    KL_df = KL_df.div(count)
+    print(KL_df)
 
-
-    # To-do: finish rest part
-        
-
-        
-    
-    # computeKL.kl_divergence(df, model, reference_corpus, news_corpus, dictionary_news, year, sample_index)
+    refer_name = os.path.splitext(os.path.basename(refer_corpus_path))[0]
+    KL_save_path = os.path.join(KL_save_folder, refer_name + "_" + "all_analyse_reports_bootstrap_sample.xlsx")
+    KL_df.to_excel(KL_save_path)
     return
 
 def isModelNameWithoutYear(filename):
@@ -220,6 +220,21 @@ def getIterFromNameWithoutYear(filename):
     pattern = r"^iter(\d+)$"
     iternum = re.findall(pattern, filename)[0]
     return int(iternum)
+
+def getSampleTimesPerDocWithoutYear(indices, column_label="all_corpus"):
+    count = pd.DataFrame(columns=[column_label], index=range(1200))
+    rows = indices.index
+    for row in rows:
+        sample_index = ast.literal_eval(indices.at[row, column_label])
+        for index in sample_index:
+            if pd.isna(count.at[index, column_label]):
+                count.at[index, column_label] = 1
+            else:
+                count.at[index, column_label] += 1
+
+    return count
+
+
 
 # computeByYear(newsModelsFolder, refer_corpus_path, news_corpus_folder, KL_save_folder)
 
@@ -263,7 +278,10 @@ def getIterFromNameWithoutYear(filename):
 # computeBootstrapByYear(bootstrap_folder_pingan, refer_corpus_path2, cut_analyse_report_folder_pingan, KL_save_folder, indices_path)
 
 
+# All analyse reports
+computeAllCorpus(refer_corpus_path)
 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+
+# if __name__ == "__main__":
+#     import doctest
+#     doctest.testmod()

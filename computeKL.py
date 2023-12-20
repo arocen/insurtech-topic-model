@@ -82,7 +82,7 @@ def kl_divergence_without_year(df, model, reference_doc:str, reports:list[str], 
         # calculate the reciprocal
         # KL = 1 / KL # comment this to use arithmetic average instead
         
-        if pd.isna(df.at[i, "a"]):
+        if pd.isna(df.at[i, column_name]):
             # initialize
             df.at[i, column_name] = KL
         else:
