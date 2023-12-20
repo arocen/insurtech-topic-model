@@ -89,3 +89,34 @@ def kl_divergence_without_year(df, model, reference_doc:str, reports:list[str], 
             df.at[i, column_name] += KL # sum up different values from all bootstrap sample models
 
     return
+
+def kl_divergence_without_year_simple_average(ith_model, df, model, reference_doc:str, reports:list[str], dictionary_reports, sample_index:list[int]=None, column_name="all_corpus"):
+    '''
+    Average KL are calculated among sample reports of a model, instead of per report.
+
+    - ith_model: ith model. So result value of KL should be written to row i.
+    '''
+    reports_id2word =  dictionary_reports
+    bow_refer = reports_id2word.doc2bow(reference_doc.split())
+    reference_topics = model.get_document_topics(bow_refer, minimum_probability=0.000000000001)
+
+    if sample_index:
+        reports = [reports[index] for index in sample_index]
+    
+    KL = 0
+    for report in reports:
+        bow_news = reports_id2word.doc2bow(report.split()) 
+        report_topics = model.get_document_topics(bow_news, minimum_probability=0.000000000001)
+        
+        KL += kullback_leibler(reference_topics, report_topics)
+    
+    # Get average
+    doc_num = len(sample_index)
+    avg_KL = KL / doc_num
+
+    if pd.isna(df.at[ith_model, column_name]):
+        df.at[ith_model, column_name] = avg_KL
+    else:
+        print("Error: Something must be wrong since you write different results to a same cell.")
+
+    return

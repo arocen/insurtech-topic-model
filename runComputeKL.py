@@ -165,7 +165,7 @@ def computeAllCorpus(refer_corpus_path, modelsFolder=os.environ.get("bootstrapMo
     
     # Loop models
     KL_df = pd.DataFrame(columns=["all_corpus"], index=range(1200))
-    for modelname in modelnames:
+    for modelname in tqdm(modelnames):
         model_path = os.path.join(bootstrap_folder_all, modelname)
         iternum = getIterFromNameWithoutYear(modelname)
         sample_index = ast.literal_eval(indices.at[iternum, "all_corpus"])
@@ -184,6 +184,40 @@ def computeAllCorpus(refer_corpus_path, modelsFolder=os.environ.get("bootstrapMo
     KL_save_path = os.path.join(KL_save_folder, refer_name + "_" + "all_analyse_reports_bootstrap_sample.xlsx")
     KL_df.to_excel(KL_save_path)
     return
+
+
+def computeAllCorpusSimpleAverage(refer_corpus_path, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports"), KL_save_folder=os.environ.get("KL_save_folder")):
+    '''Compute average KL with another method.'''
+        # All analyse reports
+    bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
+    all_corpus = runLDA.loadAllCorpus()
+    indices_path = os.path.join(bootstrap_folder_all, "indices.xlsx")
+    indices = pd.read_excel(indices_path)
+
+
+    modelnames = [f for f in os.listdir(modelsFolder) if isModelNameWithoutYear(f)]
+    with open(refer_corpus_path, "r", encoding="utf-8") as f:
+        reference_corpus = f.read()
+    
+    # Loop models
+    KL_df = pd.DataFrame(columns=["all_corpus"], index=range(100))
+    for i, modelname in tqdm(enumerate(modelnames)):
+        model_path = os.path.join(bootstrap_folder_all, modelname)
+        iternum = getIterFromNameWithoutYear(modelname)
+        sample_index = ast.literal_eval(indices.at[iternum, "all_corpus"])
+        model = LdaModel.load(model_path)
+        dictionary_reports = corpora.Dictionary.load(model_path + ".id2word")
+
+        # Compute KL
+        computeKL.kl_divergence_without_year_simple_average(i, KL_df, model, reference_corpus, all_corpus, dictionary_reports, sample_index, column_name="all_corpus")
+    
+    print(KL_df)
+
+    refer_name = os.path.splitext(os.path.basename(refer_corpus_path))[0]
+    KL_save_path = os.path.join(KL_save_folder, refer_name + "_" + "all_analyse_reports_bootstrap_sample_simple_average.xlsx")
+    KL_df.to_excel(KL_save_path)
+    return
+
 
 def isModelNameWithoutYear(filename):
     '''
@@ -279,8 +313,10 @@ def getSampleTimesPerDocWithoutYear(indices, column_label="all_corpus"):
 
 
 # All analyse reports
-computeAllCorpus(refer_corpus_path)
+# computeAllCorpus(refer_corpus_path)
 
+# All analyse reports simple average
+computeAllCorpusSimpleAverage(refer_corpus_path)
 
 # if __name__ == "__main__":
 #     import doctest
