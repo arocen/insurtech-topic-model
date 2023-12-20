@@ -48,3 +48,44 @@ def kl_divergence(df, model, reference_doc:str, news_report:list[str], dictionar
             df.at[i, year] += KL # sum up different values from all bootstrap sample models
 
     return
+
+
+def kl_divergence_without_year(df, model, reference_doc:str, reports:list[str], dictionary_reports, sample_index:list[int]=None, column_name="all_corpus"):
+    """
+    Calculate Kullback-Leibler divergence between reference_doc and every element of reports.
+
+    Parameters:
+    - df: DataFrame saving K-L divergence per document
+    - model: a LdaModel instance of bootstrap sampled InsurTech analyse reports
+    - reference_doc: raw text
+    - reports: list of lists
+    - dictionary_reports: saved dictionary of a LDA model
+    - sample_index: indice of documents used in bootstrap sample model. If none, loop all documents.
+    - column_name: column name where K-L divergence is saved in df
+
+    Returns: None.
+            Value of df is changed.
+    """
+    reports_id2word =  dictionary_reports
+    bow_refer = reports_id2word.doc2bow(reference_doc.split())
+    reference_topics = model.get_document_topics(bow_refer, minimum_probability=0.000000000001)
+
+    if sample_index:
+        reports = [reports[index] for index in sample_index]
+    
+    for i, report in zip(sample_index, reports):
+        bow_news = reports_id2word.doc2bow(report.split()) 
+        report_topics = model.get_document_topics(bow_news, minimum_probability=0.000000000001)
+        KL = kullback_leibler(reference_topics, report_topics)
+        # print("report_topics:", report_topics)
+
+        # calculate the reciprocal
+        # KL = 1 / KL # comment this to use arithmetic average instead
+        
+        if pd.isna(df.at[i, "a"]):
+            # initialize
+            df.at[i, column_name] = KL
+        else:
+            df.at[i, column_name] += KL # sum up different values from all bootstrap sample models
+
+    return

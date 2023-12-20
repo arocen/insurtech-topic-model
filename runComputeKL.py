@@ -150,16 +150,37 @@ def getSampleTimesPerDoc(indices, years):
 
     return count
 
-def computeAllCorpus():
+def computeAllCorpus(refer_corpus_path, modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports")):
     '''Compute KL divergence based on LDA models bootstraped from all analyse reports.'''
     # All analyse reports
     bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
     all_corpus = runLDA.loadAllCorpus()
     indices_path = os.path.join(bootstrap_folder_all, "indices.xlsx")
+    indices = pd.read_excel(indices_path)
+    df = pd.DataFrame(columns=["all_corpus"])
+
+    modelnames = [f for f in os.listdir(modelsFolder) if isModelNameWithoutYear(f)]
+    with open(refer_corpus_path, "r", encoding="utf-8") as f:
+        reference_corpus = f.read()
     
+    # Loop models
+    for modelname in modelnames:
+        model_path = os.path.join(bootstrap_folder_all, modelname)
+        iternum = getIterFromNameWithoutYear(modelname)
+        sample_index = ast.literal_eval(indices.at[iternum, "all_corpus"])
+        model = LdaModel.load(model_path)
+        dictionary_reports = corpora.Dictionary.load(model_path + ".id2word")
+
+        # Compute KL
+        computeKL.kl_divergence_without_year(df, model, reference_corpus, all_corpus, dictionary_reports, sample_index, column_name="all_corpus")
+    
+    # divide all values by number of bootstrap samples
+
+
     # To-do: finish rest part
+        
 
-
+        
     
     # computeKL.kl_divergence(df, model, reference_corpus, news_corpus, dictionary_news, year, sample_index)
     return
