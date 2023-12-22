@@ -267,7 +267,6 @@ def run_kl_divergence_mutal_refer(refer_corpus_path_list:list[str], modelsFolder
     bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
     modelnames = [f for f in os.listdir(modelsFolder) if isModelNameWithoutYear(f)]
 
-    
     # Save refer name and refer corpus in a dictionary
     reference_corpus = dict()
     for refer_path in refer_corpus_path_list:
@@ -296,19 +295,61 @@ def run_kl_divergence_mutal_refer(refer_corpus_path_list:list[str], modelsFolder
     KL_df.to_excel(KL_save_path)
     return
 
+def run_kl_divergence_mutal_refer_constant_left(left_refer:str, other_refer_path_list:list[str], modelsFolder=os.environ.get("bootstrapModelAllAnalyseReports"), KL_save_folder=os.environ.get("KL_save_folder")):
+        bootstrap_folder_all = os.environ.get("bootstrapModelAllAnalyseReports")
+        modelnames = [f for f in os.listdir(modelsFolder) if isModelNameWithoutYear(f)]
 
+        # Save refer name and refer corpus in 2 dictionaries
+        left_corpus = dict()
+        with open(left_refer, "r", encoding="utf-8") as f:
+            refer_name = os.path.basename(left_refer).split(".")[0]
+            left_corpus[refer_name] = f.read()
+        
+        other_corpus = dict()
+        for refer_path in other_refer_path_list:
+            with open(refer_path, "r", encoding="utf-8") as f:
+                refer_name = os.path.basename(refer_path).split(".")[0]
+                other_corpus[refer_name] = f.read()
+        
+        combinations = get_refer_combinations_with_constant_left(list(left_corpus.keys())[0], list(other_corpus.keys()))
+        column_names = [refer_pair[0][4:] + " vs " + refer_pair[1][4:] for refer_pair in combinations]
+        KL_df = pd.DataFrame(columns=column_names, index=range(100))
+
+        for modelname in tqdm(modelnames):
+            model_path = os.path.join(bootstrap_folder_all, modelname)
+            model = LdaModel.load(model_path)
+            dictionary_reports = corpora.Dictionary.load(model_path + ".id2word")
+            iternum = getIterFromNameWithoutYear(modelname)
+
+            # Compute KL
+            for combination in combinations:
+                column_name = combination[0][4:] + " vs " + combination[1][4:]
+                computeKL.kl_divergence_mutal_refer(iternum, KL_df, model, list(left_corpus.values())[0], other_corpus[combination[1]], dictionary_reports, column_name)
+        
+        print(KL_df)
+
+        KL_save_path = os.path.join(KL_save_folder, "all_analyse_reports_bootstrap_sample_mutal_refer_constant_left.xlsx")
+        KL_df.to_excel(KL_save_path)
+        return
+        
 def get_refer_combinations(reference_corpus:list[str])->list[tuple]:
     '''Get non-repeating combinations of 2 reference documents from a list.'''
     return list(combinations(reference_corpus, 2))
 
-
-
+def get_refer_combinations_with_constant_left(left_refer:str, other_refers:list):
+    '''Get non-repeating combinations of 2 reference documents. Left refer is constant, right refers are from other_refers.'''
+    return [(left_refer, right_refer) for right_refer in other_refers]
 
 refer_corpus_path = os.environ.get('cut_refer')    # corpus about InsurTech
 refer_corpus_path2 = os.environ.get('cut_refer2')  # corpus about insurance instead of Insurtech
 refer_corpus_path3 = os.environ.get("cut_refer3")  # another corpus about InsurTech
 refer_corpus_path4 = os.environ.get("cut_refer4")  # another corpus about InsurTech
 refer_corpus_path5 = os.environ.get('cut_refer5')  # corpus about insurance
+refer_corpus_path6 = os.environ.get('cut_refer6')  # corpus about insurance and digital finance
+refer_corpus_path7 = os.environ.get('cut_refer7')  # corpus about digitalization of insurance company
+refer_corpus_path8 = os.environ.get('cut_refer8')  # corpus about InsurTech
+refer_corpus_path9 = os.environ.get('cut_refer9')  # corpus about innovation and finance
+refer_corpus_path10 = os.environ.get('cut_refer10')# corpus about InsurTech and insurance industry
 doc_div_chars = os.environ.get("doc_div_chars")
 
 newsModelsFolder = os.environ.get("modelByYear_folder")
@@ -383,8 +424,14 @@ KL_save_folder_refer3_by_company = os.environ.get("KL_save_folder_refer3_by_comp
 # computeAllCorpus(refer_corpus_path5, KL_save_folder=os.environ.get("KL_save_folder_average_per_doc"))
 
 # Refer combinations
-refer_path_list = [refer_corpus_path, refer_corpus_path2, refer_corpus_path3, refer_corpus_path4, refer_corpus_path5]
-run_kl_divergence_mutal_refer(refer_path_list)
+# refer_path_list = [refer_corpus_path, refer_corpus_path2, refer_corpus_path3, refer_corpus_path4, refer_corpus_path5]
+# run_kl_divergence_mutal_refer(refer_path_list)
+
+# Refer combinations with constant left refer
+left_refer = refer_corpus_path3
+other_refer_path_list = [refer_corpus_path, refer_corpus_path2, refer_corpus_path4, refer_corpus_path5, refer_corpus_path6, refer_corpus_path7,
+                          refer_corpus_path8, refer_corpus_path9, refer_corpus_path10]
+run_kl_divergence_mutal_refer_constant_left(left_refer, other_refer_path_list)
 
 # if __name__ == "__main__":
 #     import doctest

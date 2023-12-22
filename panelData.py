@@ -10,7 +10,8 @@ load_dotenv()
 
 def runModel(input_df:pd.DataFrame, x_labels:list[str], y_label='总投诉量', year_fe=True, company_fe=True, cov_type='unadjusted'):
     '''
-    Run a fixed effects regression
+    Run a fixed effects regression.
+    By default, linearmodels includes an intercept term in the regression unless you explicitly remove it.
     
     - cov_type: "unadjusted" means assuming residual are homoskedastic.
         "robust" means control for heteroskedasticity using White's estimator.
